@@ -8,7 +8,7 @@ FROM python:3.8
 
 # Add the NodeSource PPA
 # (see: https://github.com/nodesource/distributions/blob/master/README.md)
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 
 # Install any additional OS-level packages you need via apt-get. RUN statements
 # add additional layers to your image, increasing its final size. Keep your
@@ -48,3 +48,10 @@ ENV DJANGO_SECRET_KEY 'foobar'
 
 # Build static files into the container
 RUN python manage.py collectstatic --noinput
+
+# Add docker-entrypoint.sh
+COPY ./docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
+
+# Use the script as the entry point
+ENTRYPOINT ["/bin/sh", "/app/docker-entrypoint.sh"]
